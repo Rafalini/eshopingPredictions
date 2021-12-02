@@ -4,7 +4,7 @@
 
 data----------> folder z danymi
 
-|-> raw -> dane nieprzetworzone
+            |-> raw -> dane nieprzetworzone
 
 models -------> folder z modelami
 
