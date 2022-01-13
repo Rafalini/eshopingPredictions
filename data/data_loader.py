@@ -12,7 +12,7 @@ def jsonl_to_pd_dataframe(filepath):
     return pd.DataFrame(data)
 
 def get_merged_data():
-    data_folder = Path("data/raw")
+    data_folder = Path("data/raw/")
     products_path = data_folder / "products.jsonl"
     sessions_path = data_folder / "sessions.jsonl"
     products_df = jsonl_to_pd_dataframe(products_path)
@@ -37,7 +37,7 @@ def add_time_specific_attribs(data, df_group):
         session_date_end = row.timestamp
 
         data.at[index, 'duration'] = (session_date_end - session_date_start).total_seconds()
-        data.at[index, 'weekend'] = session_date_end.weekday() >= 5
+        #data.at[index, 'weekend'] = session_date_end.weekday() >= 5
         data.at[index, 'month'] = session_date_end.strftime("%B")
         data.at[index, 'weekday'] = int(session_date_end.weekday())
         data.at[index, 'hour'] = session_date_end.hour
@@ -59,15 +59,6 @@ def add_event_specific_attribs(data, df_group):
         data.at[index, 'unique_item_views'] = len(product_set)
         data.at[index, 'item_views'] = total_viewed_items
         data.at[index, 'click_rate'] = total_viewed_items / minutes if minutes != 0 else 0
-
-
-def add_product_specific_attrib(data, df_group):
-    unique_categories = set()
-    for index, row in df_group.iterrows():
-        main_category = row.category_path.split(';', 1)[0] if not pd.isna(row.category_path) else ''
-        unique_categories.add(main_category)
-        data.at[index, 'unique_categories'] = len(unique_categories)
-
 
 def add_prev_session_specific_attrib(data):
     if len(data) == 0:
@@ -97,7 +88,6 @@ def add_new_attributes(data):
     for _, df_group in data.groupby('session_id'):
         add_time_specific_attribs(data, df_group)
         add_event_specific_attribs(data, df_group)
-        add_product_specific_attrib(data, df_group)
         add_purchase_attrib(data, df_group)
 
     add_prev_session_specific_attrib(data)
