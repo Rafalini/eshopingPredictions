@@ -38,7 +38,7 @@ def add_time_specific_attribs(data, df_group):
 
         data.at[index, 'duration'] = (session_date_end - session_date_start).total_seconds()
         data.at[index, 'weekend'] = session_date_end.weekday() >= 5
-        data.at[index, 'month'] = session_date_end.strftime("%B")
+        data.at[index, 'month'] = session_date_end.strftime("%m")
         data.at[index, 'weekday'] = int(session_date_end.weekday())
         data.at[index, 'hour'] = session_date_end.hour
 
