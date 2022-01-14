@@ -2,15 +2,15 @@ import pandas as pd
 import json
 import os
 import sys
+import datetime
+import time
 
 
 def splitCategories(products):
     maxLen = 0
-    lis = ""
     for index, product in products.iterrows():
         if maxLen < len(product['category_path'].split(';')):
            maxLen = len(product['category_path'].split(';'))
-           lis = product
 
     columns = products.columns
     for index, product in products.iterrows():
@@ -23,8 +23,22 @@ def splitCategories(products):
 
     return products
 
+
+def formatTime(sessions):
+    for index, session in sessions.iterrows():
+        sessionTime =  datetime.datetime.strptime(session['timestamp'], "%Y-%m-%dT%H:%M:%S")
+        sessions['weekend'] = sessionTime.weekday() >= 5
+        sessions['month'] = sessionTime.strftime("%m")
+        sessions['weekday'] = sessionTime.weekday()
+        sessions['day'] = sessionTime.day
+        sessions['hour'] = sessionTime.hour
+    return sessions
+
+
 def formatSessions(sessions):
+    formatTime(sessions)
     return sessions.replace({'event_type': {'BUY_PRODUCT': True, 'VIEW_PRODUCT': False}})
+
 
 def getDataFromJson(filepath):
     with open(filepath) as f:
@@ -51,6 +65,6 @@ if __name__ == "__main__":
 
     merged = pd.merge(sessions, users, how="left", on="user_id")
     merged = pd.merge(merged, products, how="left", on="product_id")
-    merged = merged.drop(['street', 'name', 'category_path', 'purchase_id'], axis=1)
+    merged = merged.drop(['street', 'name', 'category_path', 'purchase_id', 'timestamp'], axis=1)
     # print(merged.head)
     merged.to_csv("merged_sessions_products_data", sep=' ', index=False)
