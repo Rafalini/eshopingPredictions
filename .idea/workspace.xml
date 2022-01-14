@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7884a0ec-452e-4685-bf8f-d34524bf0a92" name="Changes" comment="Update - uzupełnienie dokumentacji końcowej">
+    <list default="true" id="7884a0ec-452e-4685-bf8f-d34524bf0a92" name="Changes" comment="Update - uzupełnienie dokumentacji końcowej vol.2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/logistic_reg.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/models/logistic_reg.pkl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/random_forest.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/models/random_forest.pkl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/notebooks/ModelImplementation2.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/ModelImplementation2.ipynb" afterDir="false" />
     </list>
@@ -54,7 +53,14 @@
       <option name="project" value="LOCAL" />
       <updated>1642148200983</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Update - uzupełnienie dokumentacji końcowej vol.2">
+      <created>1642152220542</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1642152220542</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -84,6 +90,7 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Update - uzupełnienie dokumentacji końcowej" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update - uzupełnienie dokumentacji końcowej" />
+    <MESSAGE value="Update - uzupełnienie dokumentacji końcowej vol.2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update - uzupełnienie dokumentacji końcowej vol.2" />
   </component>
 </project>
