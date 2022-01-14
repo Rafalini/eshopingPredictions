@@ -22,13 +22,18 @@ def splitCategories(products):
 
 
 def formatTime(sessions):
+    sessions['weekend'] = False
+    sessions['month'] = 0
+    sessions['weekday'] = 0
+    sessions['day'] = 0
+    sessions['hour'] = 0
     for index, session in sessions.iterrows():
         sessionTime =  datetime.datetime.strptime(session['timestamp'], "%Y-%m-%dT%H:%M:%S")
-        sessions['weekend'] = sessionTime.weekday() >= 5
-        sessions['month'] = sessionTime.strftime("%m")
-        sessions['weekday'] = sessionTime.weekday()
-        sessions['day'] = sessionTime.day
-        sessions['hour'] = sessionTime.hour
+        sessions.at[index, 'weekend'] = sessionTime.weekday() >= 5
+        sessions.at[index, 'month'] = sessionTime.strftime("%m")
+        sessions.at[index, 'weekday'] = sessionTime.weekday()
+        sessions.at[index, 'day'] = sessionTime.day
+        sessions.at[index, 'hour'] = sessionTime.hour
     return sessions
 
 
@@ -47,18 +52,20 @@ def getDataFromJson(filepath):
 
 
 def formatUsers(users):
-    for city in users['city']:
-        users['distance'] = distanceDict[city]
+    users['distance'] = 0
+    for index, user in users.iterrows():
+        users.at[index, 'distance'] = distanceDict[user['city']]
     return users
 
+DATA_PATH = ""
+DATASET_PATH = ""
 module_path = os.path.abspath(os.path.join('..'))
-if module_path not in sys.path:
-    if os.name == 'posix':
-        DATA_PATH = module_path+"/data/raw/"
-        DATASET_PATH = DATA_PATH+"/merged_sessions_products_data/"
-    else:
-        DATA_PATH = module_path+"\\data\\raw\\"
-        DATASET_PATH = DATA_PATH+"\\merged_sessions_products_data\\"
+if os.name == 'posix':
+    DATA_PATH = module_path+"/data/raw/"
+    DATASET_PATH = DATA_PATH+"/merged_sessions_products_data/"
+else:
+    DATA_PATH = module_path+"\\data\\raw\\"
+    DATASET_PATH = DATA_PATH+"\\merged_sessions_products_data\\"
 
 if __name__ == "__main__":
     sessions = formatSessions(getDataFromJson(DATA_PATH+'sessions.jsonl'))
