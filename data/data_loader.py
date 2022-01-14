@@ -2,9 +2,20 @@ from pathlib import Path
 
 import pandas as pd
 import jsonlines
+import json
+import os
+import sys
 
 import datetime as dt
 
+def getDataFromJson(filepath):
+    with open(filepath) as f:
+        lines = f.read().splitlines()
+    
+    dataFrame = pd.DataFrame(lines)
+    dataFrame.columns = ['json_element']
+    return pd.json_normalize(dataFrame['json_element'].apply(json.loads))
+    
 def jsonl_to_pd_dataframe(filepath):
     with jsonlines.open(filepath) as reader:
         data = [obj for obj in reader]
@@ -15,8 +26,8 @@ def get_merged_data():
     data_folder = Path("raw")
     products_path = data_folder / "products.jsonl"
     sessions_path = data_folder / "sessions.jsonl"
-    products_df = jsonl_to_pd_dataframe(products_path)
-    sessions_df = jsonl_to_pd_dataframe(sessions_path)
+    products_df = getDataFromJson(products_path)
+    sessions_df = getDataFromJson(sessions_path)
 
     sessions_df = pd.merge(sessions_df, products_df, how="left", on="product_id")
 
@@ -118,7 +129,21 @@ def get_data():
 
     return sessions
 
+module_path = os.path.abspath(os.path.join('..'))
+if module_path not in sys.path:
+    if os.name == 'posix':
+        DATA_PATH = module_path+"/data/raw/"
+        DATASET_PATH = DATA_PATH+"/merged_sessions_products_data/"
+    else:
+        DATA_PATH = module_path+"\\data\\raw\\"
+        DATASET_PATH = DATA_PATH+"\\merged_sessions_products_data\\"
 
 if __name__ == "__main__":
-    sessions = get_data()
-    sessions.to_csv("merged_sessions_products_data", sep=' ', index=False)
+    sessions = jsonl_to_pd_dataframe(DATA_PATH+'sessions.jsonl')
+    users = jsonl_to_pd_dataframe(DATA_PATH+'users.jsonl')
+    products = jsonl_to_pd_dataframe(DATA_PATH+'products.jsonl')
+    merged = pd.merge(sessions, users, how="left", on="user_id")
+    merged = pd.merge(merged, products, how="left", on="product_id")
+    merged.drop(['street', 'name'], axis=1)
+    # print(merged.head)
+    merged.to_csv("merged_sessions_products_data", sep=' ', index=False)
