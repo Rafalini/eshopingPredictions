@@ -23,14 +23,14 @@ def splitCategories(products):
 
 def formatTime(sessions):
     sessions['weekend'] = False
-    sessions['month'] = 0
+    #sessions['month'] = 0
     sessions['weekday'] = 0
     sessions['day'] = 0
     sessions['hour'] = 0
     for index, session in sessions.iterrows():
         sessionTime =  datetime.datetime.strptime(session['timestamp'], "%Y-%m-%dT%H:%M:%S")
         sessions.at[index, 'weekend'] = sessionTime.weekday() >= 5
-        sessions.at[index, 'month'] = sessionTime.strftime("%m")
+        #sessions.at[index, 'month'] = sessionTime.strftime("%m")
         sessions.at[index, 'weekday'] = sessionTime.weekday()
         sessions.at[index, 'day'] = sessionTime.day
         sessions.at[index, 'hour'] = sessionTime.hour

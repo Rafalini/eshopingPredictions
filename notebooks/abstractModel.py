@@ -8,6 +8,7 @@ from sklearn.model_selection import train_test_split
 
 
 def summarize_classification(y_test, y_pred):
+
     acc = accuracy_score(y_test, y_pred, normalize=True)
     prec = precision_score(y_test, y_pred)
     recall = recall_score(y_test, y_pred)
@@ -53,7 +54,8 @@ def build_model(classifier_fn, dataset, onehot_cols=[], drop_cols=[], output_nam
 
     # split dataset into training and validation dataset
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=test_frac, random_state=seed)
-    output = print(set(X_train)-set(Y_train))
+
+
     # build model
     if input is not None:
         with open(input, 'rb') as input_model:
