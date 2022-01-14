@@ -51,6 +51,6 @@ if __name__ == "__main__":
 
     merged = pd.merge(sessions, users, how="left", on="user_id")
     merged = pd.merge(merged, products, how="left", on="product_id")
-    merged = merged.drop(['street', 'name', 'category_path'], axis=1)
+    merged = merged.drop(['street', 'name', 'category_path', 'purchase_id'], axis=1)
     # print(merged.head)
     merged.to_csv("merged_sessions_products_data", sep=' ', index=False)
