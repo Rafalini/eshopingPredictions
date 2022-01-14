@@ -3,23 +3,20 @@ import json
 import os
 import sys
 import datetime
-import time
 
+distanceDict = {'Radom' : 109, 'Kraków' : 294, 'Gdynia' : 372, 'Wrocław' : 384, 'Szczecin' : 566, 'Poznań' : 311, 'Warszawa' : 0}
 
 def splitCategories(products):
-    maxLen = 0
-    for index, product in products.iterrows():
-        if maxLen < len(product['category_path'].split(';')):
-           maxLen = len(product['category_path'].split(';'))
-
     columns = products.columns
     for index, product in products.iterrows():
         categoryList = product[columns.get_loc('category_path')].split(';')
-        for i in range(maxLen - len(categoryList)):
-            categoryList.append("")
-        for i in range(maxLen):
-            categoryName = "cat_"+str(i)
-            products[categoryName] = categoryList[i]
+        for cat in categoryList:
+            products[cat] = False
+
+    for index, product in products.iterrows():
+        categoryList = product[columns.get_loc('category_path')].split(';')
+        for cat in categoryList:
+            products.at[index, cat] = True
 
     return products
 
@@ -49,6 +46,11 @@ def getDataFromJson(filepath):
     return pd.json_normalize(dataFrame['json_element'].apply(json.loads))
 
 
+def formatUsers(users):
+    for city in users['city']:
+        users['distance'] = distanceDict[city]
+    return users
+
 module_path = os.path.abspath(os.path.join('..'))
 if module_path not in sys.path:
     if os.name == 'posix':
@@ -61,10 +63,10 @@ if module_path not in sys.path:
 if __name__ == "__main__":
     sessions = formatSessions(getDataFromJson(DATA_PATH+'sessions.jsonl'))
     products = splitCategories(getDataFromJson(DATA_PATH+'products.jsonl'))
-    users = getDataFromJson(DATA_PATH+'users.jsonl')
+    users = formatUsers(getDataFromJson(DATA_PATH+'users.jsonl'))
 
     merged = pd.merge(sessions, users, how="left", on="user_id")
     merged = pd.merge(merged, products, how="left", on="product_id")
-    merged = merged.drop(['street', 'name', 'category_path', 'purchase_id', 'timestamp'], axis=1)
-    # print(merged.head)
+    merged = merged.drop(['street', 'city', 'name', 'category_path', 'purchase_id', 'timestamp', 'product_name'], axis=1)
+
     merged.to_csv("merged_sessions_products_data", sep=' ', index=False)
