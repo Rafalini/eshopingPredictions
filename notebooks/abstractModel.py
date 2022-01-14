@@ -35,43 +35,32 @@ def compare_result(result_dict):
         print()
 
 
-def build_model(classifier_fn, dataset, onehot_cols=[], drop_cols=[], output_name='purchase', 
-                seed=42, test_frac=0.2, input=None, output=None):
-    # split into input & output
-    X = dataset.drop(output_name, axis=1)
-    Y = dataset[output_name]
+def build_model(classifier_fn, dataset, onehot_cols=[], cols_to_drop=[], output_name='purchase',
+                seed=116, test_frac=0.2, input=None, output=None):
+    X_set = dataset.drop(output_name, axis=1)
+    Y_set = dataset[output_name]
 
-    # one hot encoding
-    X = pd.get_dummies(X, columns=onehot_cols)
+    X_set = pd.get_dummies(X_set, columns=onehot_cols)
 
-    # drop unused attributes
-    X = X.drop(drop_cols, axis=1)
+    X_set = X_set.drop(cols_to_drop, axis=1)
 
-    # standardize features by removing the mean and scaling to unit varianc
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
+    X_train, X_test, Y_train, Y_test = train_test_split(X_set, Y_set, test_size=test_frac, random_state=seed)
 
-    # split dataset into training and validation dataset
-    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=test_frac, random_state=seed)
-
-    # build model
     if input is not None:
         with open(input, 'rb') as input_model:
             model = pickle.load(input_model)
     else:
         model = classifier_fn(X_train, Y_train)
 
-    # evaluate on training and test dataset
     Y_pred = model.predict(X_test)
     Y_pred_train = model.predict(X_train)
 
-    # summarize results
     train_summary = summarize_classification(Y_train, Y_pred_train)
     test_summary = summarize_classification(Y_test, Y_pred)
 
     pred_result = pd.DataFrame({'y_test': Y_test, 'y_pred': Y_pred})
 
-    model_crosstab = pd.crosstab(pred_result.y_pred, pred_result.y_test)
+    conf_matrix = pd.crosstab(pred_result.y_pred, pred_result.y_test)
     
     if output is not None:
         with open(output, 'wb') as output_model:
@@ -79,5 +68,5 @@ def build_model(classifier_fn, dataset, onehot_cols=[], drop_cols=[], output_nam
     
     return {'training': train_summary,
             'test': test_summary,
-            'confusion_matrix': model_crosstab
+            'confusion_matrix': conf_matrix
             }

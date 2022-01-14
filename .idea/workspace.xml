@@ -5,9 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7884a0ec-452e-4685-bf8f-d34524bf0a92" name="Changes" comment="Update - uzupełnienie dokumentacji końcowej vol.2">
+      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example_run.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uwsgi.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/logistic_reg.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/models/logistic_reg.pkl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/random_forest.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/models/random_forest.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/ModelImplementation2.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/ModelImplementation2.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/ModelImplementation2.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/ModelImplementation.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +42,11 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../crowd-counting-service/webService" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jarek\PycharmProjects\eshopingPredictions" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
